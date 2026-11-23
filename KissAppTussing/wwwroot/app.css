@@ -2605,6 +2605,30 @@ img, video { max-width: 100%; }
   margin: 0;
 }
 
+.detail-quote-box {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #831843;
+  background: #fdf2f8;
+  border-left: 4px solid #ec4899;
+  padding: 10px 14px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin: 0;
+  font-style: italic;
+}
+
+.detail-icebreaker-box {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #1e3a8a;
+  background: #eff6ff;
+  border-left: 4px solid #3b82f6;
+  padding: 10px 14px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin: 0;
+  font-weight: 500;
+}
+
 .detail-interests-list {
   display: flex;
   flex-wrap: wrap;

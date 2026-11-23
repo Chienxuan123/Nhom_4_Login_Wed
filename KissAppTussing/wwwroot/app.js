@@ -728,12 +728,237 @@ function renderProfiles(container, profiles, allowSwipe, allowChat = false, swip
   }
 }
 
+const mockProfileDataByName = {
+  "An": {
+    occupation: "Graphic & UI/UX Designer tại Creative Agency",
+    education: "Đại học Mỹ thuật Công nghiệp Hà Nội",
+    height: "1m65",
+    idealDate: "Một buổi chiều dạo quanh phố cổ, ghé tiệm cà phê sách yên tĩnh và cùng ăn kem Tràng Tiền 🍦",
+    favSong: "Nàng Thơ - Hoàng Dũng 🎵",
+    icebreaker: "Tách cà phê ngon nhất mà bạn từng uống trong đời là ở đâu? ☕",
+    extendedBio: "Thích cà phê, đọc sách và những buổi dạo phố cuối tuần.\nMình tin vào những điều bình dị: một buổi chiều ngắm hoàng hôn, những mẩu chuyện nhỏ không đầu không cuối và một người có thể cùng mình cười thật nhiều."
+  },
+  "Linh": {
+    occupation: "Brand Marketing Manager tại tập đoàn F&B",
+    education: "Đại học Kinh tế TP. Hồ Chí Minh (UEH)",
+    height: "1m68",
+    idealDate: "Cùng nhau vào bếp nấu một bữa tối ấm cúng, nhâm nhi chút vang đỏ và trò chuyện về những dự định tương lai 🍷",
+    favSong: "Có Em - Madihu ft. Low G 🌿",
+    icebreaker: "Món ăn nào gắn liền với kỷ niệm đáng nhớ nhất thời thơ ấu của bạn? 🍲",
+    extendedBio: "Thích nấu món mới và đi tìm nơi nhiều cây xanh.\nCuộc sống dù bận rộn nhưng mình luôn trân trọng từng khoảnh khắc gia đình và mong tìm được người bạn đời biết yêu thương, sẻ chia."
+  },
+  "Mai": {
+    occupation: "Content Creator & Giáo viên Tiếng Anh",
+    education: "Đại học Ngoại ngữ - Đại học Đà Nẵng",
+    height: "1m62",
+    idealDate: "Chạy xe dọc đường biển Mỹ Khê lúc chiều muộn, ngồi uống nước dừa và nghe tiếng sóng vỗ rì rào 🌊",
+    favSong: "Until I Found You - Stephen Sanchez 🎶",
+    icebreaker: "Bạn thích ngắm bình minh trên núi hay ngắm hoàng hôn bên bờ biển hơn? 🌅",
+    extendedBio: "Mê nhạc sống, phim hay và ngắm biển lúc chiều muộn.\nTâm hồn hơi mơ mộng nhưng trái tim rất chân thành. Tìm kiếm một người bạn đồng hành trong những chuyến phiêu lưu sắp tới."
+  },
+  "Thảo": {
+    occupation: "Chủ vườn ươm & Chuyên viên Dinh dưỡng",
+    education: "Đại học Cần Thơ",
+    height: "1m58",
+    idealDate: "Một buổi sáng đi chợ hoa hoặc ghé thăm vườn cây miệt vườn thanh bình, hít thở không khí trong lành 🌸",
+    favSong: "Bao Tiền Một Mớ Bình Yên - 14 Casper 🍃",
+    icebreaker: "Điều giản dị nhất khiến bạn cảm thấy hạnh phúc trong ngày hôm nay là gì? 🍀",
+    extendedBio: "Yêu những điều giản dị: tự tay nấu một bữa ngon, chăm sóc vài chậu cây nhỏ và đọc cuốn sách yêu thích.\nHy vọng tìm được người đàn ông ấm áp, biết lắng nghe."
+  },
+  "Vy": {
+    occupation: "Fashion Stylist & Chủ tiệm Vintage",
+    education: "Đại học Kiến trúc Hà Nội",
+    height: "1m67",
+    idealDate: "Cùng nhau xem một triển lãm nghệ thuật đương đại rồi ghé tiệm đĩa than cổ điển tìm vài bản nhạc xưa 🎨",
+    favSong: "Dreams - Fleetwood Mac 🎞️",
+    icebreaker: "Món đồ kỷ niệm lâu năm nhất mà bạn vẫn giữ bên mình là gì? 📷",
+    extendedBio: "Thích đi xem triển lãm, sưu tầm đồ vintage và chụp ảnh film.\nMình yêu cái đẹp hoài cổ và mong tìm được người cùng gu thẩm mỹ để cùng dạo chơi."
+  },
+  "Hà": {
+    occupation: "Biên tập viên Văn hóa & Nghệ thuật",
+    education: "Đại học Khoa học Huế",
+    height: "1m60",
+    idealDate: "Ngồi trong hiên quán ngắm mưa sông Hương, thưởng trà sen và lắng nghe những thanh âm cuộc sống 🍵",
+    favSong: "Mưa Hồng - Trịnh Công Sơn 🌧️",
+    icebreaker: "Cuốn sách nào đã làm thay đổi cách bạn nhìn nhận cuộc sống? 📖",
+    extendedBio: "Một cuốn sách hay và tách trà thơm là ngày trọn vẹn.\nSống chậm rãi, yêu sự tử tế và tìm kiếm một tri kỷ để chia sẻ những suy nghĩ sâu sắc."
+  },
+  "Ngọc": {
+    occupation: "Huấn luyện viên Yoga & Pilates",
+    education: "Đại học Sư phạm Thể dục Thể thao",
+    height: "1m70",
+    idealDate: "Một buổi sáng tập yoga đón ánh bình minh, sau đó cùng ăn brunch lành mạnh tại một góc quán thoáng đãng 🧘‍♀️",
+    favSong: "Golden Hour - JVKE ☀️",
+    icebreaker: "Thói quen tốt nhất mà bạn duy trì được mỗi ngày là gì? 🥑",
+    extendedBio: "Thích vận động nhẹ, cà phê sáng và những cuộc trò chuyện chân thành không giấu giếm.\nNăng lượng tích cực là món quà lớn nhất mình muốn gửi đến bạn."
+  },
+  "My": {
+    occupation: "Biên đạo múa đương đại & Dancer",
+    education: "Học viện Múa Việt Nam",
+    height: "1m63",
+    idealDate: "Đi xem một đêm nhạc acoustic hoặc nhạc kịch ngoài trời rồi đi dạo đêm ngắm thành phố lên đèn 🎭",
+    favSong: "Levitating - Dua Lipa 💃",
+    icebreaker: "Nếu có thể học ngay một kỹ năng nghệ thuật trong 1 ngày, bạn sẽ chọn gì? ✨",
+    extendedBio: "Mê nhảy, phim hài và những chuyến đi bất chợt không lên lịch trước.\nCuộc đời là một điệu nhảy, hãy cùng mình nhảy một bản thật đẹp nhé!"
+  },
+  "Minh": {
+    occupation: "Senior Software Engineer (AI & Tech)",
+    education: "Đại học Bách Khoa Hà Nội",
+    height: "1m78",
+    idealDate: "Đèo nhau trên chiếc xe máy lượn một vòng hồ Tây lộng gió, rồi ghé ăn phở gánh đêm ấm lòng 🍜",
+    favSong: "Lạ Lùng - Vũ. 💻",
+    icebreaker: "Nếu được du hành thời gian, bạn muốn đến năm bao nhiêu? 🚀",
+    extendedBio: "Thích cà phê yên tĩnh, sách khoa học và chuyện vui.\nBan ngày làm việc với những dòng code logic, nhưng trái tim lại hướng về một tình yêu ấm áp, chân thành."
+  },
+  "Quân": {
+    occupation: "Food & Travel Blogger, Photographer tự do",
+    education: "Đại học RMIT Việt Nam",
+    height: "1m80",
+    idealDate: "Một chuyến food-tour thử hết các món ngon đường phố Sài Gòn rồi dừng chân tại rooftop ngắm toàn cảnh thành phố 🌆",
+    favSong: "Đi Về Nhà - Đen & JustaTee ✈️",
+    icebreaker: "Thành phố hoặc chuyến đi nào để lại cho bạn nhiều ấn tượng nhất? 🗺️",
+    extendedBio: "Đi du lịch để nếm thử món mới và nghe chuyện đời từ người địa phương.\nHy vọng tìm được người bạn đồng hành cùng xách vali đi khắp muôn nơi."
+  },
+  "Duy": {
+    occupation: "Kiến trúc sư Nội thất & Cảnh quan",
+    education: "Đại học Bách Khoa - Đại học Đà Nẵng",
+    height: "1m76",
+    idealDate: "Cùng nhau làm một món đồ gốm thủ công hoặc trang trí lại một góc nhỏ xanh mát trong nhà 🪴",
+    favSong: "Chuyện Của Mùa Đông - Hà Anh Tuấn 📐",
+    icebreaker: "Ngôi nhà lý tưởng trong tương lai của bạn trông sẽ như thế nào? 🏡",
+    extendedBio: "Cuối tuần có thể xem bóng đá hoặc tự nấu một món mới đãi người thân yêu.\nThích sự ngăn nắp, tinh tế và một mối quan hệ bền vững lâu dài."
+  },
+  "Khang": {
+    occupation: "Giám đốc Vận hành chuỗi Logistics",
+    education: "Đại học Hàng hải Việt Nam",
+    height: "1m82",
+    idealDate: "Lái xe ra bãi cắm trại ven hồ, dựng lều, nhóm lửa trại nướng BBQ và cùng ngắm dải ngân hà ⛺",
+    favSong: "Bài Ca Tình Yêu - Đinh Mạnh Ninh 🔥",
+    icebreaker: "Trải nghiệm dã ngoại mạo hiểm đáng nhớ nhất của bạn là gì? 🌲",
+    extendedBio: "Thích cắm trại, thể thao ngoài trời và những chuyến đi ngắn ngày.\nĐiềm đạm, bản lĩnh và luôn là chỗ dựa vững chãi cho người mình thương."
+  },
+  "Phúc": {
+    occupation: "Bác sĩ Thú y tại Bệnh viện Thú cưng",
+    education: "Đại học Nông Lâm TP. HCM",
+    height: "1m75",
+    idealDate: "Cùng dắt cún cưng đi dạo công viên chiều mát, sau đó ghé tiệm cà phê thân thiện với thú cưng 🐶",
+    favSong: "Tình Yêu Màu Nắng - Đoàn Thúy Trang 🐾",
+    icebreaker: "Bạn thuộc team 'nghiện chó' hay 'nghiện mèo' hơn? 🐱",
+    extendedBio: "Thích chụp ảnh đời thường và chơi với các bé thú cưng.\nNhững ai yêu thương động vật thường có trái tim rất ấm áp và kiên nhẫn."
+  },
+  "Hoàng": {
+    occupation: "Bếp trưởng nhà hàng Fusion Á - Âu",
+    education: "Học viện Ẩm thực Quốc tế",
+    height: "1m79",
+    idealDate: "Tự tay nấu cho bạn một thực đơn đặc biệt gồm 5 món ngon với những nguyên liệu tươi ngon nhất 🍳",
+    favSong: "Fly Me to the Moon - Frank Sinatra 🍷",
+    icebreaker: "Hương vị nào khiến bạn nhớ mãi không thể quên? 🍰",
+    extendedBio: "Nhạc hay, đồ ăn ngon và sự tử tế làm mình vui.\nTin rằng con đường ngắn nhất đến trái tim là thông qua những bữa ăn chan chứa tình cảm."
+  },
+  "Bảo": {
+    occupation: "Game Developer & Tech Creator",
+    education: "Đại học Công nghệ - ĐHQG Hà Nội",
+    height: "1m74",
+    idealDate: "Cùng nhau chơi một tựa game co-op thú vị (It Takes Two) hoặc xem phim viễn tưởng tại rạp IMAX 🎮",
+    favSong: "Enemy - Imagine Dragons 👾",
+    icebreaker: "Nếu có siêu năng lực, bạn muốn sở hữu năng lực gì nhất? ⚡",
+    extendedBio: "Thích game co-op, phim viễn tưởng và công nghệ hiện đại.\nBên ngoài có vẻ hơi trầm tính nhưng khi thân rồi thì cực kỳ hài hước và chiều chuộng người yêu."
+  },
+  "Nam": {
+    occupation: "Giám đốc Tài chính Doanh nghiệp (CFO)",
+    education: "Thạc sĩ Tài chính - Đại học Kinh tế Quốc dân",
+    height: "1m81",
+    idealDate: "Một buổi tối ăn tối lãng mạn tại nhà hàng ven sông, nghe nhạc jazz nhẹ nhàng và trò chuyện sâu lắng 🎷",
+    favSong: "My Way - Frank Sinatra 🍸",
+    icebreaker: "Giá trị sống quan trọng nhất mà bạn luôn kiên định là gì? 🧭",
+    extendedBio: "Tìm bạn đồng hành cho những chuyến đi xa và những bữa ăn ngon.\nChín chắn, thành đạt nhưng luôn giữ sự chân thành và trân trọng giá trị gia đình."
+  },
+  "Tuấn": {
+    occupation: "Huấn luyện viên Lặn biển & Marathon Runner",
+    education: "Đại học Nha Trang",
+    height: "1m78",
+    idealDate: "Một buổi sáng cùng chạy bộ ven biển đón bình minh rồi đi lặn ngắm san hô dưới đáy đại dương 🤿",
+    favSong: "Vút Bay - Đan Trường 🏃‍♂️",
+    icebreaker: "Mục tiêu thể thao hoặc thử thách lớn nhất bạn từng chinh phục là gì? 🏅",
+    extendedBio: "Mỗi sáng chạy bộ, mỗi tối dành thời gian cho thiên nhiên và biển cả.\nLối sống năng động, lành mạnh và luôn sẵn sàng cùng bạn khám phá đại dương."
+  },
+  "Đức": {
+    occupation: "Chủ nông trại Cà phê & Homestay Đà Lạt",
+    education: "Đại học Đà Lạt",
+    height: "1m77",
+    idealDate: "Cùng ngồi bên bếp lửa hồng tại Đà Lạt trong tiết trời se lạnh, uống trà atiso và nướng khoai thơm lừng 🍠",
+    favSong: "Đà Lạt Hoàng Hôn - Hoàng Oanh ☕",
+    icebreaker: "Bạn thích cảm giác se lạnh của Đà Lạt hay nắng ấm của miền biển hơn? 🌲",
+    extendedBio: "Cà phê rang xay thủ công, cắm trại và những cung đường đèo uốn lượn.\nNếu bạn muốn tìm một chốn bình yên để trút bỏ muộn phiền, hãy đến với khu vườn nhỏ của mình."
+  }
+};
+
+function getMockProfileInfo(profile) {
+  const name = cleanProfileName(profile.name);
+  if (mockProfileDataByName[name]) {
+    const data = mockProfileDataByName[name];
+    return {
+      occupation: profile.occupation || data.occupation,
+      education: profile.education || data.education,
+      height: data.height || "1m65",
+      idealDate: data.idealDate || "Một buổi hẹn lãng mạn tại quán cà phê ấm cúng ngắm phố xá lên đèn.",
+      favSong: data.favSong || "Nàng Thơ - Hoàng Dũng 🎵",
+      icebreaker: data.icebreaker || "Một ngày lý tưởng nhất của bạn sẽ diễn ra như thế nào? ☕",
+      bio: data.extendedBio || profile.bio || "Thích kết bạn, chia sẻ câu chuyện và cùng nhau tạo nên những kỷ niệm đẹp."
+    };
+  }
+
+  const isWoman = profile.gender === "Woman";
+  const age = ageFrom(profile.birthDate) || 24;
+
+  const sampleOccupations = isWoman
+    ? ["Chuyên viên Marketing & Truyền thông", "Nhà thiết kế thời trang & Content Creator", "Dược sĩ & Chăm sóc sức khỏe", "Giáo viên Tiếng Anh & Nhiếp ảnh", "Chuyên viên Tài chính Ngân hàng", "Chủ tiệm hoa tươi & Bánh ngọt"]
+    : ["Kỹ sư phần mềm & Trí tuệ nhân tạo", "Quản lý kinh doanh & Đầu tư", "Kiến trúc sư thiết kế cảnh quan", "Nhiếp ảnh gia & Travel Blogger", "Bác sĩ chuyên khoa", "Giám đốc sáng tạo Agency"];
+
+  const sampleSchools = [
+    "Đại học Ngoại thương (FTU)", "Đại học Kinh tế Quốc dân (NEU)", "Đại học Bách Khoa",
+    "Đại học RMIT Việt Nam", "Đại học Khoa học Xã hội & Nhân văn", "Đại học Kiến trúc"
+  ];
+
+  const sampleHeights = isWoman
+    ? ["1m60", "1m63", "1m65", "1m67", "1m70"]
+    : ["1m74", "1m76", "1m78", "1m80", "1m83"];
+
+  const sampleDates = isWoman
+    ? ["Một buổi chiều đi dạo phố sách, ghé tiệm cà phê ngắm hoàng hôn rồi ăn tối ấm cúng.", "Cùng nhau xem một bộ phim hay tại rạp rồi dạo quanh phố đêm nghe nhạc nhẹ."]
+    : ["Một buổi tối lãng mạn tại quán nhỏ ven sông, cùng trò chuyện và ngắm thành phố lên đèn.", "Cùng lái xe đi dã ngoại cuối tuần tại ngoại ô, thưởng thức cà phê và gió trời."];
+
+  const sampleSongs = [
+    "Nàng Thơ - Hoàng Dũng 🎵", "Có Em - Madihu 🌿", "Lover - Taylor Swift 💖",
+    "Until I Found You - Stephen Sanchez ✨", "Bao Tiền Một Mớ Bình Yên 🌸", "Đi Về Nhà - Đen ✈️"
+  ];
+
+  const sampleIcebreakers = [
+    "Nếu có thể du lịch đến bất cứ nơi nào ngay ngày mai, bạn sẽ chọn đi đâu? ✈️",
+    "Món ăn hoặc quán cà phê nào ở thành phố này mà bạn thích nhất? ☕",
+    "Điều gì dễ làm bạn mỉm cười nhất trong một ngày bình thường? 💖"
+  ];
+
+  const hash = Math.abs(name.split("").reduce((acc, c) => acc + c.charCodeAt(0), age));
+
+  return {
+    occupation: profile.occupation || sampleOccupations[hash % sampleOccupations.length],
+    education: profile.education || sampleSchools[hash % sampleSchools.length],
+    height: sampleHeights[hash % sampleHeights.length],
+    idealDate: sampleDates[hash % sampleDates.length],
+    favSong: sampleSongs[hash % sampleSongs.length],
+    icebreaker: sampleIcebreakers[hash % sampleIcebreakers.length],
+    bio: profile.bio || "Người này rất thích kết bạn, giao lưu và tìm kiếm những cuộc trò chuyện chân thành."
+  };
+}
+
 function attachCardSwipeGestures(container) {
   const cards = container.querySelectorAll(".person-card");
   cards.forEach((card) => {
     if (!card.querySelector("[data-swipe]")) return;
     card.classList.add("is-draggable");
 
+    let isTracking = false;
     let isDragging = false;
     let startX = 0;
     let startY = 0;
@@ -745,19 +970,27 @@ function attachCardSwipeGestures(container) {
 
     const onPointerDown = (e) => {
       if (e.target.closest("button, a, input, select, textarea")) return;
-      isDragging = true;
+      isTracking = true;
+      isDragging = false;
       startX = e.clientX;
       startY = e.clientY;
       currentX = 0;
       currentY = 0;
-      card.classList.add("is-dragging");
-      card.setPointerCapture?.(e.pointerId);
     };
 
     const onPointerMove = (e) => {
-      if (!isDragging) return;
+      if (!isTracking) return;
       currentX = e.clientX - startX;
       currentY = e.clientY - startY;
+
+      if (!isDragging && (Math.abs(currentX) > 8 || Math.abs(currentY) > 8)) {
+        isDragging = true;
+        card.classList.add("is-dragging");
+        try { card.setPointerCapture(e.pointerId); } catch {}
+      }
+
+      if (!isDragging) return;
+
       const rotate = currentX * 0.07;
       card.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotate}deg)`;
 
@@ -776,10 +1009,17 @@ function attachCardSwipeGestures(container) {
     };
 
     const onPointerUp = (e) => {
-      if (!isDragging) return;
+      if (!isTracking) return;
+      isTracking = false;
+
+      if (!isDragging) {
+        openProfileDetail(card.dataset.profileId);
+        return;
+      }
+
       isDragging = false;
       card.classList.remove("is-dragging");
-      card.releasePointerCapture?.(e.pointerId);
+      try { card.releasePointerCapture(e.pointerId); } catch {}
 
       const threshold = 90;
       if (currentX > threshold) {
@@ -864,16 +1104,21 @@ function closeMatchModal() {
   currentMatchTargetProfile = null;
 }
 
-let currentDetailProfile = null;
-
-function openProfileDetail(profileId) {
-  const profile = appState.discoverProfiles?.find((p) => p.id === profileId)
+async function openProfileDetail(profileId) {
+  let profile = appState.discoverProfiles?.find((p) => p.id === profileId)
     || appState.matchesProfiles?.find((p) => p.id === profileId)
     || appState.rejectedProfiles?.find((p) => p.id === profileId);
+
+  if (!profile) {
+    try {
+      profile = await request(`/profiles/${profileId}`);
+    } catch {}
+  }
 
   if (!profile) return;
   currentDetailProfile = profile;
 
+  const mock = getMockProfileInfo(profile);
   const modal = document.querySelector("#profile-detail-modal");
   const avatar = profile.photos?.find((p) => p.isAvatar) || profile.photos?.[0];
   const image = photoUrl(avatar?.url);
@@ -911,11 +1156,15 @@ function openProfileDetail(profileId) {
     "Relationship": "Mối quan hệ nghiêm túc"
   };
 
-  document.querySelector("#detail-city").textContent = profile.city || "Chưa cập nhật";
-  document.querySelector("#detail-occupation").textContent = profile.occupation || "Chưa cập nhật";
-  document.querySelector("#detail-education").textContent = profile.education || "Chưa cập nhật";
-  document.querySelector("#detail-looking-for").textContent = lookingForMap[profile.lookingFor] || profile.lookingFor || "Hẹn hò";
-  document.querySelector("#detail-bio").textContent = profile.bio || "Người này chưa viết giới thiệu.";
+  document.querySelector("#detail-city").textContent = profile.city || "Hà Nội";
+  document.querySelector("#detail-occupation").textContent = mock.occupation;
+  document.querySelector("#detail-education").textContent = mock.education;
+  document.querySelector("#detail-height").textContent = mock.height;
+  document.querySelector("#detail-looking-for").textContent = lookingForMap[profile.lookingFor] || profile.lookingFor || "Hẹn hò lãng mạn";
+  document.querySelector("#detail-fav-song").textContent = mock.favSong;
+  document.querySelector("#detail-bio").textContent = mock.bio;
+  document.querySelector("#detail-ideal-date").textContent = `"${mock.idealDate}"`;
+  document.querySelector("#detail-icebreaker").textContent = `💡 "${mock.icebreaker}"`;
 
   const interestsEl = document.querySelector("#detail-interests");
   if (profile.interests && profile.interests.length) {
@@ -984,20 +1233,19 @@ function attachFilterPresets() {
 }
 
 async function swipe(event) {
-  const button = event.target.closest("[data-swipe]");
+  const button = event.target.closest("button, a, input, select, textarea");
   if (button) {
-    const card = button.closest("[data-profile-id]");
-    if (card) {
-      executeSwipe(card, button.dataset.swipe === "true");
+    if (button.dataset.swipe) {
+      const card = button.closest("[data-profile-id]");
+      if (card) {
+        executeSwipe(card, button.dataset.swipe === "true");
+      }
     }
     return;
   }
-  const viewTrigger = event.target.closest("[data-view-profile]");
-  if (viewTrigger) {
-    const card = viewTrigger.closest("[data-profile-id]");
-    if (card?.dataset.profileId) {
-      openProfileDetail(card.dataset.profileId);
-    }
+  const card = event.target.closest("[data-profile-id]");
+  if (card?.dataset.profileId) {
+    openProfileDetail(card.dataset.profileId);
   }
 }
 
@@ -1642,11 +1890,8 @@ async function startApp() {
       openChatFromMatch(event);
       return;
     }
-    const viewTrigger = event.target.closest("[data-view-profile]");
-    if (viewTrigger) {
-      const card = viewTrigger.closest("[data-profile-id]");
-      if (card?.dataset.profileId) openProfileDetail(card.dataset.profileId);
-    }
+    const card = event.target.closest("[data-profile-id]");
+    if (card?.dataset.profileId) openProfileDetail(card.dataset.profileId);
   });
   document.querySelector("#passed-results").addEventListener("click", (event) => {
     const undoBtn = event.target.closest("[data-undo-swipe]");
@@ -1654,11 +1899,8 @@ async function startApp() {
       undoPass(event);
       return;
     }
-    const viewTrigger = event.target.closest("[data-view-profile]");
-    if (viewTrigger) {
-      const card = viewTrigger.closest("[data-profile-id]");
-      if (card?.dataset.profileId) openProfileDetail(card.dataset.profileId);
-    }
+    const card = event.target.closest("[data-profile-id]");
+    if (card?.dataset.profileId) openProfileDetail(card.dataset.profileId);
   });
   document.querySelector("#chat-messages").addEventListener("click", (event) => {
     const reactBtn = event.target.closest("[data-react-id]");

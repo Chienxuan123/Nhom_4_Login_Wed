@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/app.css?v=dating-features-20261123">
-  <script src="/app.js?v=dating-features-20261123" defer></script>
+  <link rel="stylesheet" href="/app.css?v=profile-detail-mock-20261123">
+  <script src="/app.js?v=profile-detail-mock-20261123" defer></script>
 </head>
 <body>
   <main class="auth-layout">
@@ -257,76 +257,86 @@
         <p id="admin-message" class="form-message" role="status" aria-live="polite" hidden></p>
       </div>
     </section>
-    <!-- Match Celebration Modal -->
-    <div id="match-modal" class="dating-modal match-modal" hidden>
-      <div class="dating-modal-backdrop" id="match-backdrop"></div>
-      <div class="match-modal-card">
-        <button class="modal-close-btn" id="match-close-x" type="button" aria-label="Đóng">✕</button>
-        <div class="match-confetti-wrap" aria-hidden="true">
-          <span>💖</span><span>✨</span><span>🎉</span><span>💘</span><span>🌟</span><span>💖</span><span>✨</span>
-        </div>
-        <div class="match-modal-header">
-          <span class="match-badge-pulse">💘 TƯƠNG HỢP MỚI</span>
-          <h2 class="match-title">It's a Match!</h2>
-          <p class="match-subtitle">Hai bạn đã phải lòng nhau rồi đấy! ✨</p>
-        </div>
-        <div class="match-avatars">
-          <div class="match-avatar match-avatar-me">
-            <img id="match-my-avatar" src="" alt="Ảnh của bạn">
-          </div>
-          <div class="match-heart-pulse">💖</div>
-          <div class="match-avatar match-avatar-target">
-            <img id="match-target-avatar" src="" alt="Ảnh đối phương">
-          </div>
-        </div>
-        <p class="match-target-name" id="match-target-name">Bạn và đối phương đã thích nhau!</p>
-        <div class="match-actions">
-          <button type="button" class="match-chat-btn" id="match-open-chat-btn">💬 Nhắn tin ngay</button>
-          <button type="button" class="match-keep-btn" id="match-close-btn">Tiếp tục quẹt thẻ 🔥</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Profile Detail Modal -->
-    <div id="profile-detail-modal" class="dating-modal profile-detail-modal" hidden>
-      <div class="dating-modal-backdrop" id="profile-detail-backdrop"></div>
-      <div class="profile-detail-card">
-        <button class="modal-close-btn" id="profile-detail-close-btn" type="button" aria-label="Đóng">✕</button>
-        <div class="detail-gallery">
-          <img id="detail-photo" src="" alt="Ảnh hồ sơ">
-          <div class="detail-badges" id="detail-badges"></div>
-        </div>
-        <div class="detail-content">
-          <div class="detail-header">
-            <div>
-              <h2 id="detail-name"></h2>
-              <p id="detail-meta" class="detail-meta-line"></p>
-            </div>
-            <div id="detail-zodiac" class="detail-zodiac-badge"></div>
-          </div>
-          <div class="detail-info-grid">
-            <div class="detail-info-item"><span class="info-icon">📍</span><strong>Thành phố:</strong> <span id="detail-city"></span></div>
-            <div class="detail-info-item"><span class="info-icon">💼</span><strong>Công việc:</strong> <span id="detail-occupation"></span></div>
-            <div class="detail-info-item"><span class="info-icon">🎓</span><strong>Học vấn:</strong> <span id="detail-education"></span></div>
-            <div class="detail-info-item"><span class="info-icon">💘</span><strong>Tìm kiếm:</strong> <span id="detail-looking-for"></span></div>
-          </div>
-          <div class="detail-section">
-            <h3>Giới thiệu bản thân</h3>
-            <p id="detail-bio" class="detail-bio-text"></p>
-          </div>
-          <div class="detail-section">
-            <h3>Sở thích cá nhân</h3>
-            <div id="detail-interests" class="detail-interests-list"></div>
-          </div>
-          <div class="detail-actions" id="detail-actions">
-            <button type="button" class="btn-swipe-pass" id="detail-pass-btn"><span class="btn-swipe-icon">✕</span> Bỏ qua</button>
-            <button type="button" class="btn-swipe-like" id="detail-like-btn"><span class="btn-swipe-icon">💖</span> Thích ngay</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <footer class="app-footer"><span>Kiss Dating <span>💖</span> Kết nối yêu thương chân thành</span><a href="/openapi/v1.json" target="_blank" rel="noreferrer">API docs ↗</a></footer>
   </main>
+
+  <!-- Match Celebration Modal -->
+  <div id="match-modal" class="dating-modal match-modal" hidden>
+    <div class="dating-modal-backdrop" id="match-backdrop"></div>
+    <div class="match-modal-card">
+      <button class="modal-close-btn" id="match-close-x" type="button" aria-label="Đóng">✕</button>
+      <div class="match-confetti-wrap" aria-hidden="true">
+        <span>💖</span><span>✨</span><span>🎉</span><span>💘</span><span>🌟</span><span>💖</span><span>✨</span>
+      </div>
+      <div class="match-modal-header">
+        <span class="match-badge-pulse">💘 TƯƠNG HỢP MỚI</span>
+        <h2 class="match-title">It's a Match!</h2>
+        <p class="match-subtitle">Hai bạn đã phải lòng nhau rồi đấy! ✨</p>
+      </div>
+      <div class="match-avatars">
+        <div class="match-avatar match-avatar-me">
+          <img id="match-my-avatar" src="" alt="Ảnh của bạn">
+        </div>
+        <div class="match-heart-pulse">💖</div>
+        <div class="match-avatar match-avatar-target">
+          <img id="match-target-avatar" src="" alt="Ảnh đối phương">
+        </div>
+      </div>
+      <p class="match-target-name" id="match-target-name">Bạn và đối phương đã thích nhau!</p>
+      <div class="match-actions">
+        <button type="button" class="match-chat-btn" id="match-open-chat-btn">💬 Nhắn tin ngay</button>
+        <button type="button" class="match-keep-btn" id="match-close-btn">Tiếp tục quẹt thẻ 🔥</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Detail Modal -->
+  <div id="profile-detail-modal" class="dating-modal profile-detail-modal" hidden>
+    <div class="dating-modal-backdrop" id="profile-detail-backdrop"></div>
+    <div class="profile-detail-card">
+      <button class="modal-close-btn" id="profile-detail-close-btn" type="button" aria-label="Đóng">✕</button>
+      <div class="detail-gallery">
+        <img id="detail-photo" src="" alt="Ảnh hồ sơ">
+        <div class="detail-badges" id="detail-badges"></div>
+      </div>
+      <div class="detail-content">
+        <div class="detail-header">
+          <div>
+            <h2 id="detail-name"></h2>
+            <p id="detail-meta" class="detail-meta-line"></p>
+          </div>
+          <div id="detail-zodiac" class="detail-zodiac-badge"></div>
+        </div>
+        <div class="detail-info-grid">
+          <div class="detail-info-item"><span class="info-icon">📍</span><strong>Thành phố:</strong> <span id="detail-city"></span></div>
+          <div class="detail-info-item"><span class="info-icon">💼</span><strong>Công việc:</strong> <span id="detail-occupation"></span></div>
+          <div class="detail-info-item"><span class="info-icon">🎓</span><strong>Học vấn:</strong> <span id="detail-education"></span></div>
+          <div class="detail-info-item"><span class="info-icon">📏</span><strong>Chiều cao:</strong> <span id="detail-height"></span></div>
+          <div class="detail-info-item"><span class="info-icon">💘</span><strong>Tìm kiếm:</strong> <span id="detail-looking-for"></span></div>
+          <div class="detail-info-item"><span class="info-icon">🎵</span><strong>Giai điệu:</strong> <span id="detail-fav-song"></span></div>
+        </div>
+        <div class="detail-section">
+          <h3>Giới thiệu bản thân</h3>
+          <p id="detail-bio" class="detail-bio-text"></p>
+        </div>
+        <div class="detail-section">
+          <h3>Buổi hẹn lý tưởng</h3>
+          <p id="detail-ideal-date" class="detail-quote-box"></p>
+        </div>
+        <div class="detail-section">
+          <h3>Gợi ý mở lời</h3>
+          <p id="detail-icebreaker" class="detail-icebreaker-box"></p>
+        </div>
+        <div class="detail-section">
+          <h3>Sở thích cá nhân</h3>
+          <div id="detail-interests" class="detail-interests-list"></div>
+        </div>
+        <div class="detail-actions" id="detail-actions">
+          <button type="button" class="btn-swipe-pass" id="detail-pass-btn"><span class="btn-swipe-icon">✕</span> Bỏ qua</button>
+          <button type="button" class="btn-swipe-like" id="detail-like-btn"><span class="btn-swipe-icon">💖</span> Thích ngay</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
