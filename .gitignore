@@ -1,0 +1,16 @@
+.vs/
+**/bin/
+**/obj/
+*.user
+*.suo
+
+.fake
+
+**/*.db
+**/*.db-shm
+**/*.db-wal
+KissAppTussing/wwwroot/uploads/profiles/
+KissAppTussing/wwwroot/uploads/journey/
+KissAppTussing/App_Data/chat/
+
+*.zip
