@@ -586,7 +586,7 @@ function renderDiscoverPage() {
 
 function renderProfiles(container, profiles, allowSwipe, allowChat = false, swipeStatusByProfile = null) {
   if (!profiles.length) {
-    container.innerHTML = '<p class="empty-message">Chưa tìm thấy hồ sơ phù hợp. Hãy thử điều chỉnh bộ lọc hoặc quay lại sau.</p>';
+    container.innerHTML = '<p class="empty-message">💘 Chưa tìm thấy hồ sơ phù hợp. Hãy thử điều chỉnh bộ lọc tìm kiếm hoặc quay lại sau nhé!</p>';
     return;
   }
   container.innerHTML = profiles.map((profile) => {
@@ -594,24 +594,45 @@ function renderProfiles(container, profiles, allowSwipe, allowChat = false, swip
     const avatar = profile.photos?.find((photo) => photo.isAvatar) || profile.photos?.[0];
     const image = photoUrl(avatar?.url);
     const swipeStatus = swipeStatusByProfile?.get(profile.id);
+    const age = ageFrom(profile.birthDate);
+    const lookingForMap = {
+      "Dating": "Hẹn hò",
+      "Friendship": "Kết bạn",
+      "Relationship": "Nghiêm túc"
+    };
+    const lookingForText = lookingForMap[profile.lookingFor] || profile.lookingFor || "Hẹn hò";
     const actions = allowSwipe
-      ? `<div class="person-card-actions"><button type="button" data-swipe="false">Bỏ qua</button><button type="button" data-swipe="true">Thích ♡</button></div>`
+      ? `<div class="person-card-actions">
+          <button type="button" class="btn-swipe-pass" data-swipe="false" title="Bỏ qua hồ sơ này"><span class="btn-swipe-icon">✕</span> Bỏ qua</button>
+          <button type="button" class="btn-swipe-like" data-swipe="true" title="Thích hồ sơ này"><span class="btn-swipe-icon">💖</span> Thích</button>
+        </div>`
       : swipeStatusByProfile
         ? `<div class="person-card-actions person-card-chat-actions ${swipeStatus?.isRejected ? "rejected-actions" : swipeStatus?.isMutualLike ? "" : "pending-like-actions"}">${swipeStatus?.isRejected
-          ? `<span class="rejected-status">Đã bỏ qua</span><button class="undo-swipe-button" type="button" data-undo-swipe="${profile.id}" aria-label="Thu hồi lượt bỏ qua với ${escapeHtml(name)}">Thu hồi</button>`
+          ? `<span class="rejected-status">✕ Đã bỏ qua</span><button class="undo-swipe-button" type="button" data-undo-swipe="${profile.id}" aria-label="Thu hồi lượt bỏ qua với ${escapeHtml(name)}">↺ Thu hồi</button>`
           : swipeStatus?.isMutualLike
-            ? `<button class="person-card-chat-button" type="button" data-open-chat="${profile.id}" aria-label="Nhắn tin với ${escapeHtml(name)}"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M3 4.75A2.75 2.75 0 0 1 5.75 2h8.5A2.75 2.75 0 0 1 17 4.75v5.5A2.75 2.75 0 0 1 14.25 13H9l-4.5 3v-3.2A2.75 2.75 0 0 1 3 10.25z"/></svg>Nhắn tin</button>`
-            : `<span class="like-pending-status">Đã thích · đang chờ phản hồi</span><button class="person-card-chat-button" type="button" data-open-chat="${profile.id}" aria-label="Nhắn tin với ${escapeHtml(name)}"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M3 4.75A2.75 2.75 0 0 1 5.75 2h8.5A2.75 2.75 0 0 1 17 4.75v5.5A2.75 2.75 0 0 1 14.25 13H9l-4.5 3v-3.2A2.75 2.75 0 0 1 3 10.25z"/></svg>Nhắn tin</button>`}</div>`
+            ? `<button class="person-card-chat-button" type="button" data-open-chat="${profile.id}" aria-label="Nhắn tin với ${escapeHtml(name)}"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M3 4.75A2.75 2.75 0 0 1 5.75 2h8.5A2.75 2.75 0 0 1 17 4.75v5.5A2.75 2.75 0 0 1 14.25 13H9l-4.5 3v-3.2A2.75 2.75 0 0 1 3 10.25z"/></svg>💬 Nhắn tin ngay</button>`
+            : `<span class="like-pending-status">💖 Đã thích · Đang chờ</span><button class="person-card-chat-button" type="button" data-open-chat="${profile.id}" aria-label="Nhắn tin với ${escapeHtml(name)}"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M3 4.75A2.75 2.75 0 0 1 5.75 2h8.5A2.75 2.75 0 0 1 17 4.75v5.5A2.75 2.75 0 0 1 14.25 13H9l-4.5 3v-3.2A2.75 2.75 0 0 1 3 10.25z"/></svg>Nhắn tin</button>`}</div>`
         : allowChat
-          ? `<div class="person-card-actions person-card-chat-actions"><button class="person-card-chat-button" type="button" data-open-chat="${profile.id}" aria-label="Nhắn tin với ${escapeHtml(name)}"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M3 4.75A2.75 2.75 0 0 1 5.75 2h8.5A2.75 2.75 0 0 1 17 4.75v5.5A2.75 2.75 0 0 1 14.25 13H9l-4.5 3v-3.2A2.75 2.75 0 0 1 3 10.25z"/></svg>Nhắn tin</button></div>`
+          ? `<div class="person-card-actions person-card-chat-actions"><button class="person-card-chat-button" type="button" data-open-chat="${profile.id}" aria-label="Nhắn tin với ${escapeHtml(name)}"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M3 4.75A2.75 2.75 0 0 1 5.75 2h8.5A2.75 2.75 0 0 1 17 4.75v5.5A2.75 2.75 0 0 1 14.25 13H9l-4.5 3v-3.2A2.75 2.75 0 0 1 3 10.25z"/></svg>💬 Nhắn tin</button></div>`
           : "";
     return `<article class="person-card" data-profile-id="${profile.id}">
-      ${image ? `<img class="person-photo" src="${escapeHtml(image)}" alt="Ảnh hồ sơ ${escapeHtml(name)}">` : `<div class="person-photo person-photo-placeholder" aria-hidden="true">${escapeHtml(name.trim().charAt(0).toUpperCase())}</div>`}
-      <div class="person-card-body"><div class="person-card-heading"><h2>${escapeHtml(name)}</h2><span>${ageFrom(profile.birthDate)}</span></div>
-      <div class="person-meta">${profile.city ? `<span>${escapeHtml(profile.city)}</span>` : ""}<span>${escapeHtml(profile.lookingFor || "Dating")}</span></div>
-      <p class="person-bio">${escapeHtml(profile.bio || "Chưa có phần giới thiệu.")}</p>
-      <div class="person-interests">${(profile.interests || []).map((interest) => `<span class="interest-chip">${escapeHtml(interest.name)}</span>`).join("")}</div>
-      ${actions}</div></article>`;
+      <div class="person-photo-container">
+        ${image ? `<img class="person-photo" src="${escapeHtml(image)}" alt="Ảnh hồ sơ ${escapeHtml(name)}" loading="lazy">` : `<div class="person-photo person-photo-placeholder" aria-hidden="true">${escapeHtml(name.trim().charAt(0).toUpperCase())}</div>`}
+        <div class="person-photo-overlay">
+          ${profile.city ? `<span class="photo-badge location-badge">📍 ${escapeHtml(profile.city)}</span>` : ""}
+          <span class="photo-badge goal-badge">💘 ${escapeHtml(lookingForText)}</span>
+        </div>
+      </div>
+      <div class="person-card-body">
+        <div class="person-card-heading">
+          <h2>${escapeHtml(name)} <span class="verified-badge" title="Hồ sơ đã xác thực">✔</span></h2>
+          <span class="person-age">${age ? `${age} tuổi` : ""}</span>
+        </div>
+        <p class="person-bio">${escapeHtml(profile.bio || "Chưa có phần giới thiệu.")}</p>
+        <div class="person-interests">${(profile.interests || []).map((interest) => `<span class="interest-chip">${escapeHtml(interest.name)}</span>`).join("")}</div>
+        ${actions}
+      </div>
+    </article>`;
   }).join("");
 }
 
@@ -715,7 +736,7 @@ async function swipe(event) {
     if (result.isLike) await loadLikedProfiles();
     else await loadRejectedProfiles();
     if (result.isMatch) {
-      notify(document.querySelector("#discover-message"), "Hai bạn đã thích nhau! Đã có một người bạn mới.", true);
+      notify(document.querySelector("#discover-message"), "🎉 CHÚC MỪNG: Hai bạn đã tương hợp (It's a Match)! Hãy vào mục Trò chuyện để nhắn tin ngay nhé! 💖", true);
     }
   } catch (error) {
     buttons.forEach((item) => { item.disabled = false; });

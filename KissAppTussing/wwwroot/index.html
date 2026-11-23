@@ -3,28 +3,38 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0F766E">
+  <meta name="theme-color" content="#fd267d">
   <meta name="referrer" content="no-referrer">
-  <meta name="description" content="Kiss - kết nối và hẹn hò.">
-  <title>Kiss | Đăng nhập</title>
+  <meta name="description" content="Kiss Dating - Ứng dụng hẹn hò & kết nối yêu thương chân thành.">
+  <title>Kiss Dating - Hẹn hò & Kết nối yêu thương</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/app.css?v=undo-pass-20261102">
-  <script src="/app.js?v=undo-pass-20261102" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/app.css?v=dating-20261123">
+  <script src="/app.js?v=dating-20261123" defer></script>
 </head>
 <body>
   <main class="auth-layout">
-    <section class="auth-story" aria-label="Giới thiệu Kiss">
-      <img class="auth-reference" src="/images/kiss-auth-reference.png" alt="Kiss: Biết đâu, cuộc gặp hôm nay lại là khởi đầu của một câu chuyện đáng nhớ. Minh họa đôi môi đỏ và hoa với dòng chữ Kisses for you.">
+    <section class="auth-story" aria-label="Giới thiệu Kiss Dating">
+      <div class="auth-story-overlay">
+        <div class="auth-story-badge">💖 Ứng Dụng Hẹn Hò & Kết Nối</div>
+        <h2 class="auth-story-title">Tìm thấy người ấy,<br><span class="text-gradient">bắt đầu tình yêu.</span></h2>
+        <p class="auth-story-desc">Kết nối với những tâm hồn đồng điệu, tạo nên những cuộc trò chuyện ý nghĩa và câu chuyện đáng nhớ.</p>
+        <div class="auth-story-features">
+          <div class="feature-item"><span class="feature-icon">✨</span> Gợi ý hồ sơ thông minh theo sở thích</div>
+          <div class="feature-item"><span class="feature-icon">💬</span> Trò chuyện, gửi ảnh & video tức thì</div>
+          <div class="feature-item"><span class="feature-icon">🔒</span> Bảo mật và an toàn cho người dùng</div>
+        </div>
+      </div>
+      <img class="auth-reference" src="/images/K-ISS.png" alt="Kiss Dating: Bắt đầu câu chuyện tình yêu đáng nhớ.">
     </section>
 
     <section class="auth-panel" aria-labelledby="auth-title">
       <header class="auth-heading">
-        <a class="mobile-brand" href="/" aria-label="Kiss trang chủ"><span class="brand-mark">k</span><span>kiss</span></a>
-        <p class="eyebrow" id="auth-kicker">RẤT VUI ĐƯỢC GẶP LẠI</p>
+        <a class="mobile-brand" href="/" aria-label="Kiss Dating"><span class="brand-mark">💖</span><span>Kiss <small class="brand-badge">Dating</small></span></a>
+        <p class="eyebrow" id="auth-kicker">CHÀO MỪNG BẠN ĐẾN VỚI KISS</p>
         <h1 id="auth-title">Chào bạn.</h1>
-        <p class="auth-subtitle" id="auth-subtitle">Đăng nhập để tiếp tục hành trình gặp gỡ.</p>
+        <p class="auth-subtitle" id="auth-subtitle">Đăng nhập để tiếp tục hành trình hẹn hò và kết nối.</p>
       </header>
 
       <div class="auth-tabs" role="tablist" aria-label="Tài khoản">
@@ -89,30 +99,30 @@
 
   <main id="dating-app" class="dating-app" hidden>
     <header class="app-header">
-      <a class="app-brand" href="/" aria-label="Kiss"><span class="brand-mark">k</span><span>kiss</span></a>
+      <a class="app-brand" href="/" aria-label="Kiss Dating"><span class="brand-mark">💖</span><span>Kiss <small class="brand-badge">Dating</small></span></a>
       <nav class="app-nav" aria-label="Điều hướng">
-        <button class="app-nav-item is-active" data-page="discover" type="button">Khám phá</button>
-        <button class="app-nav-item" data-page="journey" type="button">Hành trình</button>
-        <button class="app-nav-item" data-page="matches" type="button">Bạn bè <span id="match-count">0</span></button>
-        <button class="app-nav-item" data-page="chat" type="button">Tin nhắn</button>
-        <button class="app-nav-item" data-page="connections" type="button">Kết nối <span id="connection-count">0</span></button>
-        <button class="app-nav-item" data-page="passed" type="button">Từ chối <span id="passed-count">0</span></button>
-        <button class="app-nav-item" data-page="profile" type="button">Hồ sơ của tôi</button>
-        <button class="app-nav-item" data-page="admin" id="admin-nav" type="button" hidden>Quản trị viên</button>
+        <button class="app-nav-item is-active" data-page="discover" type="button"><span class="nav-icon">🔥</span> Khám phá</button>
+        <button class="app-nav-item" data-page="matches" type="button"><span class="nav-icon">💖</span> Đã thích <span id="match-count">0</span></button>
+        <button class="app-nav-item" data-page="chat" type="button"><span class="nav-icon">💬</span> Trò chuyện</button>
+        <button class="app-nav-item" data-page="journey" type="button"><span class="nav-icon">✨</span> Khoảnh khắc</button>
+        <button class="app-nav-item" data-page="connections" type="button"><span class="nav-icon">👥</span> Bạn bè <span id="connection-count">0</span></button>
+        <button class="app-nav-item" data-page="passed" type="button"><span class="nav-icon">✕</span> Đã bỏ qua <span id="passed-count">0</span></button>
+        <button class="app-nav-item" data-page="profile" type="button"><span class="nav-icon">👤</span> Hồ sơ</button>
+        <button class="app-nav-item" data-page="admin" id="admin-nav" type="button" hidden><span class="nav-icon">⚙</span> Quản trị</button>
       </nav>
       <div class="app-account"><span id="app-user-name">Thành viên</span><button id="logout-button" class="logout-button" type="button">Đăng xuất</button></div>
     </header>
 
     <section id="discover-page" class="app-page">
-      <header class="page-heading"><div><p class="eyebrow">MỘT CUỘC GẶP MỚI</p><h1>Khám phá</h1></div><p>Tìm người cùng nhịp với bạn.</p></header>
+      <header class="page-heading"><div><p class="eyebrow">MATCH & DATING</p><h1>Khám phá người ấy</h1></div><p>Tìm kiếm một nửa lý tưởng cùng nhịp đập trái tim với bạn.</p></header>
       <form id="discover-filters" class="filter-bar">
         <label class="field"><span>Tìm theo tên</span><input name="search" type="search" placeholder="Tên hồ sơ"></label>
         <label class="field"><span>Giới tính</span><select name="gender"><option value="">Tất cả</option><option value="Woman">Nữ</option><option value="Man">Nam</option><option value="NonBinary">Phi nhị nguyên</option><option value="PreferNotToSay">Không chia sẻ</option></select></label>
         <label class="field"><span>Tuổi từ</span><input name="minAge" type="number" min="18" max="120" placeholder="18"></label>
         <label class="field"><span>Đến</span><input name="maxAge" type="number" min="18" max="120" placeholder="99"></label>
         <label class="field"><span>Thành phố</span><input name="city" type="search" maxlength="100" placeholder="Mọi nơi"></label>
-        <label class="field"><span>Mục đích</span><select name="lookingFor"><option value="">Bất kỳ</option><option value="Friendship">Kết bạn</option><option value="Dating">Hẹn hò</option><option value="Relationship">Mối quan hệ nghiêm túc</option></select></label>
-        <label class="field"><span>Sở thích</span><select name="interestId" id="filter-interest"><option value="">Tất cả</option></select></label>
+        <label class="field"><span>Mục đích</span><select name="lookingFor"><option value="">Bất kỳ</option><option value="Dating">Hẹn hò lãng mạn</option><option value="Relationship">Mối quan hệ nghiêm túc</option><option value="Friendship">Kết bạn tâm giao</option></select></label>
+        <label class="field"><span>Sở thích</span><select name="interestId" id="filter-interest"><option value="">Tất cả sở thích</option></select></label>
         <button class="submit-button" type="submit">Lọc hồ sơ</button>
       </form>
       <p id="discover-message" class="form-message" role="status" aria-live="polite" hidden></p>
@@ -131,61 +141,61 @@
           <label class="field"><span>Thành phố</span><input name="city" maxlength="100" placeholder="Ví dụ: Hà Nội"></label>
           <label class="field"><span>Công việc</span><input name="occupation" maxlength="120" placeholder="Bạn đang làm gì?"></label>
           <label class="field"><span>Học vấn</span><input name="education" maxlength="120" placeholder="Bạn học ở đâu?"></label>
-          <label class="field"><span>Bạn đang tìm</span><select name="lookingFor" required><option value="Friendship">Kết bạn</option><option value="Dating">Hẹn hò</option><option value="Relationship">Mối quan hệ nghiêm túc</option></select></label>
-          <label class="field profile-bio"><span>Giới thiệu</span><textarea name="bio" rows="4" maxlength="500" placeholder="Chia sẻ một chút về bạn"></textarea></label>
-          <div class="profile-interests"><p class="field-title">Sở thích</p><div id="interest-options" class="interest-options"></div></div>
+          <label class="field"><span>Bạn đang tìm</span><select name="lookingFor" required><option value="Dating">Hẹn hò</option><option value="Relationship">Mối quan hệ nghiêm túc</option><option value="Friendship">Kết bạn</option></select></label>
+          <label class="field profile-bio"><span>Giới thiệu bản thân</span><textarea name="bio" rows="4" maxlength="500" placeholder="Chia sẻ một chút về tính cách, sở thích và mẫu người bạn muốn tìm kiếm..."></textarea></label>
+          <div class="profile-interests"><p class="field-title">Sở thích cá nhân</p><div id="interest-options" class="interest-options"></div></div>
           <p id="profile-message" class="form-message" role="status" aria-live="polite" hidden></p>
           <button class="submit-button" type="submit">Lưu hồ sơ <span aria-hidden="true">↗</span></button>
         </form>
         <aside class="photo-manager">
           <h2>Ảnh hồ sơ</h2>
           <p>Tối đa 6 ảnh PNG, JPEG hoặc WebP, mỗi ảnh không quá 5 MB.</p>
-          <form id="photo-form" class="photo-upload"><label class="field"><span>Thêm ảnh</span><input name="file" type="file" accept="image/png,image/jpeg,image/webp" required></label><button class="submit-button" type="submit">Tải ảnh lên</button></form>
+          <form id="photo-form" class="photo-upload"><label class="field"><span>Thêm ảnh mới</span><input name="file" type="file" accept="image/png,image/jpeg,image/webp" required></label><button class="submit-button" type="submit">Tải ảnh lên</button></form>
           <div id="photo-list" class="photo-list"></div>
         </aside>
       </div>
     </section>
 
     <section id="matches-page" class="app-page" hidden>
-      <header class="page-heading"><div><p class="eyebrow">HỒ SƠ BẠN ĐÃ THÍCH</p><h1>Bạn bè</h1></div><p>Hồ sơ bạn đã thích sẽ hiện ở đây. Có thể nhắn tin khi hai bạn cùng thích nhau.</p></header>
+      <header class="page-heading"><div><p class="eyebrow">DANH SÁCH TƯƠNG HỢP</p><h1>Người bạn đã thích</h1></div><p>Danh sách hồ sơ bạn đã thích. Khi cả hai cùng thích nhau, các bạn có thể bắt đầu nhắn tin và hẹn hò ngay!</p></header>
       <div id="matches-results" class="profile-grid"></div>
     </section>
 
     <section id="passed-page" class="app-page" hidden>
-      <header class="page-heading"><div><p class="eyebrow">HỒ SƠ BẠN ĐÃ BỎ QUA</p><h1>Từ chối</h1></div><p>Những hồ sơ bạn đã bỏ qua sẽ được lưu và hiển thị ở đây.</p></header>
+      <header class="page-heading"><div><p class="eyebrow">HỒ SƠ ĐÃ BỎ QUA</p><h1>Từ chối</h1></div><p>Những hồ sơ bạn đã bỏ qua. Bạn có thể bấm thu hồi bất cứ lúc nào nếu đổi ý.</p></header>
       <p id="passed-message" class="form-message" role="status" aria-live="polite" hidden></p>
       <div id="passed-results" class="profile-grid"></div>
     </section>
 
     <section id="chat-page" class="app-page chat-page" hidden>
-      <header class="page-heading"><div><p class="eyebrow">BẮT ĐẦU MỘT CUỘC TRÒ CHUYỆN</p><h1>Tin nhắn</h1></div><p>Bạn có thể nhắn tin với người đã thích mình hoặc người bạn đã thích.</p></header>
+      <header class="page-heading"><div><p class="eyebrow">HỘP THƯ HẸN HÒ</p><h1>Trò chuyện riêng tư</h1></div><p>Nhắn tin với người bạn đã kết nối và chuẩn bị cho buổi hẹn hò đầu tiên.</p></header>
       <div class="chat-layout">
         <aside class="chat-contact-panel" aria-label="Danh sách trò chuyện">
-          <div class="chat-contact-heading"><h2>Trò chuyện</h2><span id="chat-contact-count">0</span></div>
+          <div class="chat-contact-heading"><h2>Tin nhắn hẹn hò</h2><span id="chat-contact-count">0</span></div>
           <div id="chat-contact-list" class="chat-contact-list"></div>
         </aside>
         <section class="chat-thread" aria-label="Cuộc trò chuyện">
-          <div id="chat-empty" class="chat-empty"><span aria-hidden="true">♡</span><strong>Chọn một người bạn để nhắn tin</strong><p>Bạn có thể gửi tin nhắn, ảnh, video và emoji.</p></div>
+          <div id="chat-empty" class="chat-empty"><span aria-hidden="true">💖</span><strong>Chọn một người để bắt đầu trò chuyện</strong><p>Chia sẻ cảm xúc, gửi lời chào đầu tiên hoặc trao đổi hình ảnh, video.</p></div>
           <header id="chat-thread-header" class="chat-thread-header" hidden>
             <div id="chat-peer-avatar" class="chat-peer-avatar"></div>
-            <div><strong id="chat-peer-name"></strong><span>Đã trở thành bạn bè</span></div>
+            <div><strong id="chat-peer-name"></strong><span>Đã tương hợp và kết nối 💖</span></div>
           </header>
           <div id="chat-messages" class="chat-messages" role="log" aria-live="polite" aria-relevant="additions text"></div>
           <p id="chat-status" class="form-message chat-status" role="status" aria-live="polite" hidden></p>
           <form id="chat-form" class="chat-composer" hidden>
             <div class="chat-composer-tools">
               <div class="chat-emoji-wrap">
-                <button id="chat-emoji-toggle" class="chat-tool-button" type="button" aria-label="Chọn emoji" aria-expanded="false">☺</button>
+                <button id="chat-emoji-toggle" class="chat-tool-button" type="button" aria-label="Chọn emoji" aria-expanded="false">😊</button>
                 <div id="chat-emoji-picker" class="chat-emoji-picker" hidden aria-label="Emoji">
-                  <button type="button" data-chat-emoji="😊">😊</button><button type="button" data-chat-emoji="😂">😂</button><button type="button" data-chat-emoji="😍">😍</button><button type="button" data-chat-emoji="🥰">🥰</button><button type="button" data-chat-emoji="😉">😉</button><button type="button" data-chat-emoji="👋">👋</button><button type="button" data-chat-emoji="🙌">🙌</button><button type="button" data-chat-emoji="❤️">❤️</button><button type="button" data-chat-emoji="👍">👍</button><button type="button" data-chat-emoji="✨">✨</button>
+                  <button type="button" data-chat-emoji="💖">💖</button><button type="button" data-chat-emoji="😍">😍</button><button type="button" data-chat-emoji="🥰">🥰</button><button type="button" data-chat-emoji="😘">😘</button><button type="button" data-chat-emoji="🌹">🌹</button><button type="button" data-chat-emoji="😊">😊</button><button type="button" data-chat-emoji="😉">😉</button><button type="button" data-chat-emoji="👋">👋</button><button type="button" data-chat-emoji="☕">☕</button><button type="button" data-chat-emoji="✨">✨</button>
                 </div>
               </div>
-              <label class="chat-file-button"><span aria-hidden="true">＋</span> Ảnh/video<input id="chat-file" name="media" type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/webm"></label>
+              <label class="chat-file-button"><span aria-hidden="true">📷</span> Ảnh/video<input id="chat-file" name="media" type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/webm"></label>
               <span id="chat-file-name" class="chat-file-name">Tối đa 8 MB cho ảnh, 20 MB cho video</span><button id="chat-file-clear" class="chat-file-clear" type="button" aria-label="Bỏ tệp đã chọn" hidden>×</button>
             </div>
             <div class="chat-compose-row">
-              <textarea id="chat-content" name="content" rows="2" maxlength="2000" placeholder="Viết lời nhắn..." aria-label="Nội dung tin nhắn"></textarea>
-              <button class="chat-send-button" type="submit">Gửi</button>
+              <textarea id="chat-content" name="content" rows="2" maxlength="2000" placeholder="Nhập tin nhắn ngọt ngào..." aria-label="Nội dung tin nhắn"></textarea>
+              <button class="chat-send-button" type="submit">Gửi 💖</button>
             </div>
           </form>
         </section>
@@ -208,18 +218,18 @@
     </section>
 
     <section id="journey-page" class="app-page journey-page" hidden>
-      <header class="page-heading"><div><p class="eyebrow">CHIA SẺ NHỮNG ĐIỀU ĐANG DIỄN RA</p><h1>Hành trình</h1></div><p>Một khoảnh khắc nhỏ cũng có thể mở đầu một câu chuyện.</p></header>
+      <header class="page-heading"><div><p class="eyebrow">KHOẢNH KHẮC & NHẬT KÝ</p><h1>Bảng tin hẹn hò</h1></div><p>Chia sẻ những khoảnh khắc đẹp để người ấy hiểu bạn hơn.</p></header>
       <form id="journey-form" class="journey-composer">
-        <label class="field journey-content-field"><span>Hôm nay bạn muốn chia sẻ điều gì?</span><textarea name="content" rows="4" maxlength="2000" placeholder="Viết một trạng thái, kể về ngày hôm nay..."></textarea></label>
+        <label class="field journey-content-field"><span>Bạn muốn chia sẻ điều gì hôm nay?</span><textarea name="content" rows="4" maxlength="2000" placeholder="Viết một trạng thái ngọt ngào, chia sẻ sở thích hay một khoảnh khắc trong ngày..."></textarea></label>
         <div class="journey-composer-footer">
-          <label class="journey-media-picker"><span aria-hidden="true">＋</span><span>Thêm ảnh hoặc video</span><input id="journey-media" name="media" type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/webm"></label>
+          <label class="journey-media-picker"><span aria-hidden="true">📷</span><span>Thêm ảnh hoặc video</span><input id="journey-media" name="media" type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/webm"></label>
           <span class="journey-file-name" id="journey-file-name">PNG, JPEG, WebP hoặc MP4, WebM</span>
-          <button class="submit-button" type="submit">Đăng lên hành trình <span aria-hidden="true">↗</span></button>
+          <button class="submit-button" type="submit">Đăng bài viết 💖 <span aria-hidden="true">↗</span></button>
         </div>
         <div class="journey-media-preview" id="journey-media-preview" hidden></div>
         <p class="form-message" id="journey-message" role="status" aria-live="polite" hidden></p>
       </form>
-      <div class="journey-feed-heading"><h2>Dòng thời gian</h2><button id="journey-refresh" class="quiet-button" type="button">Làm mới</button></div>
+      <div class="journey-feed-heading"><h2>Khoảnh khắc mới nhất</h2><button id="journey-refresh" class="quiet-button" type="button">Làm mới</button></div>
       <div id="journey-feed" class="journey-feed" aria-live="polite"></div>
     </section>
     <section id="admin-page" class="app-page" hidden>
@@ -248,7 +258,7 @@
         <p id="admin-message" class="form-message" role="status" aria-live="polite" hidden></p>
       </div>
     </section>
-    <footer class="app-footer"><span>Kiss <span>♥</span> kết nối chân thành</span><a href="/openapi/v1.json" target="_blank" rel="noreferrer">API docs ↗</a></footer>
+    <footer class="app-footer"><span>Kiss Dating <span>💖</span> Kết nối yêu thương chân thành</span><a href="/openapi/v1.json" target="_blank" rel="noreferrer">API docs ↗</a></footer>
   </main>
 </body>
 </html>
