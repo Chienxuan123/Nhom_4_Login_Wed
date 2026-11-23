@@ -41,6 +41,91 @@ function ageFrom(value) {
   return age;
 }
 
+function getZodiac(value) {
+  if (!value) return null;
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return null;
+  const m = date.getMonth() + 1;
+  const d = date.getDate();
+  if ((m === 3 && d >= 21) || (m === 4 && d <= 19)) return { icon: "♈", name: "Bạch Dương" };
+  if ((m === 4 && d >= 20) || (m === 5 && d <= 20)) return { icon: "♉", name: "Kim Ngưu" };
+  if ((m === 5 && d >= 21) || (m === 6 && d <= 21)) return { icon: "♊", name: "Song Tử" };
+  if ((m === 6 && d >= 22) || (m === 7 && d <= 22)) return { icon: "♋", name: "Cự Giải" };
+  if ((m === 7 && d >= 23) || (m === 8 && d <= 22)) return { icon: "♌", name: "Sư Tử" };
+  if ((m === 8 && d >= 23) || (m === 9 && d <= 22)) return { icon: "♍", name: "Xử Nữ" };
+  if ((m === 9 && d >= 23) || (m === 10 && d <= 23)) return { icon: "♎", name: "Thiên Bình" };
+  if ((m === 10 && d >= 24) || (m === 11 && d <= 22)) return { icon: "♏", name: "Bọ Cạp" };
+  if ((m === 11 && d >= 23) || (m === 12 && d <= 21)) return { icon: "♐", name: "Nhân Mã" };
+  if ((m === 12 && d >= 22) || (m === 1 && d <= 19)) return { icon: "♑", name: "Ma Kết" };
+  if ((m === 1 && d >= 20) || (m === 2 && d <= 18)) return { icon: "♒", name: "Bảo Bình" };
+  return { icon: "♓", name: "Song Ngư" };
+}
+
+let audioCtx = null;
+function getAudioContext() {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) audioCtx = new AudioContextClass();
+  }
+  if (audioCtx && audioCtx.state === "suspended") {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+function playTone(freq, duration = 0.15, type = "sine", gainVal = 0.1) {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    gain.gain.setValueAtTime(gainVal, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + duration);
+  } catch {}
+}
+
+function playMatchSound() {
+  try {
+    const notes = [523.25, 659.25, 783.99, 1046.50];
+    notes.forEach((freq, idx) => {
+      setTimeout(() => playTone(freq, 0.35, "triangle", 0.14), idx * 110);
+    });
+  } catch {}
+}
+
+function playPopSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(440, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.12);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.12);
+  } catch {}
+}
+
+function playSwipeSound(isLike) {
+  if (isLike) {
+    playTone(587.33, 0.12, "sine", 0.08);
+    setTimeout(() => playTone(880.00, 0.18, "sine", 0.1), 80);
+  } else {
+    playTone(280.00, 0.12, "sawtooth", 0.04);
+  }
+}
+
 function setAuthMode(nextMode) {
   authMode = nextMode;
   const registering = authMode === "register";
@@ -595,6 +680,7 @@ function renderProfiles(container, profiles, allowSwipe, allowChat = false, swip
     const image = photoUrl(avatar?.url);
     const swipeStatus = swipeStatusByProfile?.get(profile.id);
     const age = ageFrom(profile.birthDate);
+    const zodiac = getZodiac(profile.birthDate);
     const lookingForMap = {
       "Dating": "Hẹn hò",
       "Friendship": "Kết bạn",
@@ -616,15 +702,17 @@ function renderProfiles(container, profiles, allowSwipe, allowChat = false, swip
           ? `<div class="person-card-actions person-card-chat-actions"><button class="person-card-chat-button" type="button" data-open-chat="${profile.id}" aria-label="Nhắn tin với ${escapeHtml(name)}"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M3 4.75A2.75 2.75 0 0 1 5.75 2h8.5A2.75 2.75 0 0 1 17 4.75v5.5A2.75 2.75 0 0 1 14.25 13H9l-4.5 3v-3.2A2.75 2.75 0 0 1 3 10.25z"/></svg>💬 Nhắn tin</button></div>`
           : "";
     return `<article class="person-card" data-profile-id="${profile.id}">
-      <div class="person-photo-container">
+      <div class="person-photo-container" data-view-profile="${profile.id}">
+        ${allowSwipe ? `<div class="swipe-stamp stamp-like">LIKE 💖</div><div class="swipe-stamp stamp-pass">NOPE ✕</div>` : ""}
         ${image ? `<img class="person-photo" src="${escapeHtml(image)}" alt="Ảnh hồ sơ ${escapeHtml(name)}" loading="lazy">` : `<div class="person-photo person-photo-placeholder" aria-hidden="true">${escapeHtml(name.trim().charAt(0).toUpperCase())}</div>`}
         <div class="person-photo-overlay">
           ${profile.city ? `<span class="photo-badge location-badge">📍 ${escapeHtml(profile.city)}</span>` : ""}
           <span class="photo-badge goal-badge">💘 ${escapeHtml(lookingForText)}</span>
+          ${zodiac ? `<span class="photo-badge zodiac-badge" title="Cung hoàng đạo">${zodiac.icon} ${escapeHtml(zodiac.name)}</span>` : ""}
         </div>
       </div>
       <div class="person-card-body">
-        <div class="person-card-heading">
+        <div class="person-card-heading" data-view-profile="${profile.id}">
           <h2>${escapeHtml(name)} <span class="verified-badge" title="Hồ sơ đã xác thực">✔</span></h2>
           <span class="person-age">${age ? `${age} tuổi` : ""}</span>
         </div>
@@ -634,6 +722,319 @@ function renderProfiles(container, profiles, allowSwipe, allowChat = false, swip
       </div>
     </article>`;
   }).join("");
+
+  if (allowSwipe) {
+    attachCardSwipeGestures(container);
+  }
+}
+
+function attachCardSwipeGestures(container) {
+  const cards = container.querySelectorAll(".person-card");
+  cards.forEach((card) => {
+    if (!card.querySelector("[data-swipe]")) return;
+    card.classList.add("is-draggable");
+
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    const stampLike = card.querySelector(".stamp-like");
+    const stampPass = card.querySelector(".stamp-pass");
+
+    const onPointerDown = (e) => {
+      if (e.target.closest("button, a, input, select, textarea")) return;
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      currentX = 0;
+      currentY = 0;
+      card.classList.add("is-dragging");
+      card.setPointerCapture?.(e.pointerId);
+    };
+
+    const onPointerMove = (e) => {
+      if (!isDragging) return;
+      currentX = e.clientX - startX;
+      currentY = e.clientY - startY;
+      const rotate = currentX * 0.07;
+      card.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotate}deg)`;
+
+      if (stampLike && stampPass) {
+        if (currentX > 25) {
+          stampLike.style.opacity = String(Math.min(1, (currentX - 25) / 75));
+          stampPass.style.opacity = "0";
+        } else if (currentX < -25) {
+          stampPass.style.opacity = String(Math.min(1, (-currentX - 25) / 75));
+          stampLike.style.opacity = "0";
+        } else {
+          stampLike.style.opacity = "0";
+          stampPass.style.opacity = "0";
+        }
+      }
+    };
+
+    const onPointerUp = (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      card.classList.remove("is-dragging");
+      card.releasePointerCapture?.(e.pointerId);
+
+      const threshold = 90;
+      if (currentX > threshold) {
+        executeSwipe(card, true);
+      } else if (currentX < -threshold) {
+        executeSwipe(card, false);
+      } else {
+        card.style.transition = "transform 0.25s ease";
+        card.style.transform = "";
+        if (stampLike) stampLike.style.opacity = "0";
+        if (stampPass) stampPass.style.opacity = "0";
+        setTimeout(() => { card.style.transition = ""; }, 250);
+      }
+    };
+
+    card.addEventListener("pointerdown", onPointerDown);
+    card.addEventListener("pointermove", onPointerMove);
+    card.addEventListener("pointerup", onPointerUp);
+    card.addEventListener("pointercancel", onPointerUp);
+  });
+}
+
+async function executeSwipe(card, isLike) {
+  if (!card || card.dataset.swiping === "true") return;
+  card.dataset.swiping = "true";
+  const buttons = card.querySelectorAll("button");
+  buttons.forEach((item) => { item.disabled = true; });
+
+  const profileId = card.dataset.profileId;
+  const targetProfile = appState.discoverProfiles.find((p) => p.id === profileId);
+
+  playSwipeSound(isLike);
+  card.classList.add(isLike ? "swipe-fly-right" : "swipe-fly-left");
+
+  try {
+    const result = await request("/swipes", {
+      method: "POST",
+      body: JSON.stringify({ targetUserId: profileId, isLike })
+    });
+
+    setTimeout(async () => {
+      appState.discoverProfiles = appState.discoverProfiles.filter((p) => p.id !== profileId);
+      renderDiscoverPage();
+      if (result.isLike) await loadLikedProfiles();
+      else await loadRejectedProfiles();
+
+      if (result.isMatch && targetProfile) {
+        playMatchSound();
+        showMatchCelebration(targetProfile);
+      }
+    }, 320);
+  } catch (error) {
+    card.classList.remove(isLike ? "swipe-fly-right" : "swipe-fly-left");
+    card.style.transform = "";
+    card.dataset.swiping = "false";
+    buttons.forEach((item) => { item.disabled = false; });
+    notify(document.querySelector("#discover-message"), error.message);
+  }
+}
+
+let currentMatchTargetProfile = null;
+
+function showMatchCelebration(targetProfile) {
+  currentMatchTargetProfile = targetProfile;
+  const modal = document.querySelector("#match-modal");
+  const myAvatarImg = document.querySelector("#match-my-avatar");
+  const targetAvatarImg = document.querySelector("#match-target-avatar");
+  const targetNameEl = document.querySelector("#match-target-name");
+
+  const myAvatar = appState.profile?.photos?.find((p) => p.isAvatar) || appState.profile?.photos?.[0];
+  const targetAvatar = targetProfile?.photos?.find((p) => p.isAvatar) || targetProfile?.photos?.[0];
+
+  myAvatarImg.src = photoUrl(myAvatar?.url) || "/images/K-ISS.png";
+  targetAvatarImg.src = photoUrl(targetAvatar?.url) || "/images/K-ISS.png";
+  targetNameEl.textContent = `Bạn và ${cleanProfileName(targetProfile?.name || "Người ấy")} đã thích nhau!`;
+
+  modal.hidden = false;
+}
+
+function closeMatchModal() {
+  document.querySelector("#match-modal").hidden = true;
+  currentMatchTargetProfile = null;
+}
+
+let currentDetailProfile = null;
+
+function openProfileDetail(profileId) {
+  const profile = appState.discoverProfiles?.find((p) => p.id === profileId)
+    || appState.matchesProfiles?.find((p) => p.id === profileId)
+    || appState.rejectedProfiles?.find((p) => p.id === profileId);
+
+  if (!profile) return;
+  currentDetailProfile = profile;
+
+  const modal = document.querySelector("#profile-detail-modal");
+  const avatar = profile.photos?.find((p) => p.isAvatar) || profile.photos?.[0];
+  const image = photoUrl(avatar?.url);
+  const name = cleanProfileName(profile.name);
+  const age = ageFrom(profile.birthDate);
+  const zodiac = getZodiac(profile.birthDate);
+
+  const photoEl = document.querySelector("#detail-photo");
+  photoEl.src = image || "/images/K-ISS.png";
+  photoEl.alt = `Ảnh của ${name}`;
+
+  const badgesEl = document.querySelector("#detail-badges");
+  badgesEl.innerHTML = `
+    ${profile.city ? `<span class="photo-badge location-badge">📍 ${escapeHtml(profile.city)}</span>` : ""}
+    <span class="photo-badge goal-badge">💘 ${escapeHtml(profile.lookingFor || "Hẹn hò")}</span>
+  `;
+
+  document.querySelector("#detail-name").textContent = `${name}${age ? `, ${age} tuổi` : ""}`;
+  document.querySelector("#detail-meta").textContent = [
+    profile.gender === "Woman" ? "Nữ" : profile.gender === "Man" ? "Nam" : "Khác",
+    profile.city
+  ].filter(Boolean).join(" · ");
+
+  const zodiacEl = document.querySelector("#detail-zodiac");
+  if (zodiac) {
+    zodiacEl.innerHTML = `${zodiac.icon} ${zodiac.name}`;
+    zodiacEl.hidden = false;
+  } else {
+    zodiacEl.hidden = true;
+  }
+
+  const lookingForMap = {
+    "Dating": "Hẹn hò lãng mạn",
+    "Friendship": "Kết bạn tâm giao",
+    "Relationship": "Mối quan hệ nghiêm túc"
+  };
+
+  document.querySelector("#detail-city").textContent = profile.city || "Chưa cập nhật";
+  document.querySelector("#detail-occupation").textContent = profile.occupation || "Chưa cập nhật";
+  document.querySelector("#detail-education").textContent = profile.education || "Chưa cập nhật";
+  document.querySelector("#detail-looking-for").textContent = lookingForMap[profile.lookingFor] || profile.lookingFor || "Hẹn hò";
+  document.querySelector("#detail-bio").textContent = profile.bio || "Người này chưa viết giới thiệu.";
+
+  const interestsEl = document.querySelector("#detail-interests");
+  if (profile.interests && profile.interests.length) {
+    interestsEl.innerHTML = profile.interests.map((it) => `<span class="interest-chip">${escapeHtml(it.name)}</span>`).join("");
+  } else {
+    interestsEl.innerHTML = '<span class="empty-message" style="padding:0">Chưa chọn sở thích.</span>';
+  }
+
+  const isDiscoverable = appState.discoverProfiles.some((p) => p.id === profile.id);
+  const detailActions = document.querySelector("#detail-actions");
+  detailActions.hidden = !isDiscoverable;
+
+  modal.hidden = false;
+}
+
+function closeProfileDetail() {
+  document.querySelector("#profile-detail-modal").hidden = true;
+  currentDetailProfile = null;
+}
+
+function attachFilterPresets() {
+  const container = document.querySelector(".filter-presets");
+  if (!container) return;
+  container.addEventListener("click", (e) => {
+    const pill = e.target.closest(".preset-pill");
+    if (!pill) return;
+    container.querySelectorAll(".preset-pill").forEach((p) => p.classList.remove("is-active"));
+    pill.classList.add("is-active");
+
+    const preset = pill.dataset.preset;
+    const form = document.querySelector("#discover-filters");
+    if (!form) return;
+
+    if (preset === "all") {
+      form.elements.minAge.value = "";
+      form.elements.maxAge.value = "";
+      form.elements.lookingFor.value = "";
+      form.elements.search.value = "";
+      form.elements.gender.value = "";
+      form.elements.city.value = "";
+      form.elements.interestId.value = "";
+    } else if (preset === "young") {
+      form.elements.minAge.value = "18";
+      form.elements.maxAge.value = "24";
+      form.elements.lookingFor.value = "";
+    } else if (preset === "prime") {
+      form.elements.minAge.value = "25";
+      form.elements.maxAge.value = "32";
+      form.elements.lookingFor.value = "";
+    } else if (preset === "mature") {
+      form.elements.minAge.value = "33";
+      form.elements.maxAge.value = "";
+      form.elements.lookingFor.value = "";
+    } else if (preset === "dating") {
+      form.elements.minAge.value = "";
+      form.elements.maxAge.value = "";
+      form.elements.lookingFor.value = "Dating";
+    } else if (preset === "serious") {
+      form.elements.minAge.value = "";
+      form.elements.maxAge.value = "";
+      form.elements.lookingFor.value = "Relationship";
+    }
+
+    loadDiscover();
+  });
+}
+
+async function swipe(event) {
+  const button = event.target.closest("[data-swipe]");
+  if (button) {
+    const card = button.closest("[data-profile-id]");
+    if (card) {
+      executeSwipe(card, button.dataset.swipe === "true");
+    }
+    return;
+  }
+  const viewTrigger = event.target.closest("[data-view-profile]");
+  if (viewTrigger) {
+    const card = viewTrigger.closest("[data-profile-id]");
+    if (card?.dataset.profileId) {
+      openProfileDetail(card.dataset.profileId);
+    }
+  }
+}
+
+async function loadLikedProfiles() {
+  try {
+    const likes = await request("/swipes/liked");
+    document.querySelector("#match-count").textContent = likes.length;
+    const results = document.querySelector("#matches-results");
+    if (!likes.length) {
+      results.innerHTML = '<p class="empty-message">Bạn chưa thích hồ sơ nào. Hãy khám phá và chọn Thích để lưu hồ sơ ở đây.</p>';
+      return;
+    }
+    appState.matchesProfiles = likes.map((item) => item.profile);
+    const statusByProfile = new Map(likes.map((item) => [item.profile.id, item]));
+    renderProfiles(results, likes.map((item) => item.profile), false, false, statusByProfile);
+  } catch (error) {
+    notify(document.querySelector("#discover-message"), error.message);
+  }
+}
+
+async function loadRejectedProfiles() {
+  const message = document.querySelector("#passed-message");
+  const results = document.querySelector("#passed-results");
+  try {
+    const rejected = await request("/swipes/rejected");
+    document.querySelector("#passed-count").textContent = rejected.length;
+    message.hidden = true;
+    if (!rejected.length) {
+      results.innerHTML = '<p class="empty-message">Bạn chưa bỏ qua hồ sơ nào. Hồ sơ bạn chọn Bỏ qua sẽ được lưu ở đây.</p>';
+      return;
+    }
+    appState.rejectedProfiles = rejected.map((item) => item.profile);
+    const statusByProfile = new Map(rejected.map((item) => [item.profile.id, { isRejected: true }]));
+    renderProfiles(results, rejected.map((item) => item.profile), false, false, statusByProfile);
+  } catch (error) {
+    notify(message, error.message);
+  }
 }
 
 async function loadProfile() {
@@ -715,64 +1116,6 @@ async function managePhoto(event) {
     }
     await loadProfile();
     notify(message, button.hasAttribute("data-avatar") ? "Đã đổi ảnh đại diện." : "Đã xóa ảnh.", true);
-  } catch (error) {
-    notify(message, error.message);
-  }
-}
-
-async function swipe(event) {
-  const button = event.target.closest("[data-swipe]");
-  if (!button) return;
-  const card = button.closest("[data-profile-id]");
-  const buttons = card.querySelectorAll("button");
-  buttons.forEach((item) => { item.disabled = true; });
-  try {
-    const result = await request("/swipes", {
-      method: "POST",
-      body: JSON.stringify({ targetUserId: card.dataset.profileId, isLike: button.dataset.swipe === "true" })
-    });
-    appState.discoverProfiles = appState.discoverProfiles.filter((profile) => profile.id !== card.dataset.profileId);
-    renderDiscoverPage();
-    if (result.isLike) await loadLikedProfiles();
-    else await loadRejectedProfiles();
-    if (result.isMatch) {
-      notify(document.querySelector("#discover-message"), "🎉 CHÚC MỪNG: Hai bạn đã tương hợp (It's a Match)! Hãy vào mục Trò chuyện để nhắn tin ngay nhé! 💖", true);
-    }
-  } catch (error) {
-    buttons.forEach((item) => { item.disabled = false; });
-    notify(document.querySelector("#discover-message"), error.message);
-  }
-}
-
-async function loadLikedProfiles() {
-  try {
-    const likes = await request("/swipes/liked");
-    document.querySelector("#match-count").textContent = likes.length;
-    const results = document.querySelector("#matches-results");
-    if (!likes.length) {
-      results.innerHTML = '<p class="empty-message">Bạn chưa thích hồ sơ nào. Hãy khám phá và chọn Thích để lưu hồ sơ ở đây.</p>';
-      return;
-    }
-    const statusByProfile = new Map(likes.map((item) => [item.profile.id, item]));
-    renderProfiles(results, likes.map((item) => item.profile), false, false, statusByProfile);
-  } catch (error) {
-    notify(document.querySelector("#discover-message"), error.message);
-  }
-}
-
-async function loadRejectedProfiles() {
-  const message = document.querySelector("#passed-message");
-  const results = document.querySelector("#passed-results");
-  try {
-    const rejected = await request("/swipes/rejected");
-    document.querySelector("#passed-count").textContent = rejected.length;
-    message.hidden = true;
-    if (!rejected.length) {
-      results.innerHTML = '<p class="empty-message">Bạn chưa bỏ qua hồ sơ nào. Hồ sơ bạn chọn Bỏ qua sẽ được lưu ở đây.</p>';
-      return;
-    }
-    const statusByProfile = new Map(rejected.map((item) => [item.profile.id, { isRejected: true }]));
-    renderProfiles(results, rejected.map((item) => item.profile), false, false, statusByProfile);
   } catch (error) {
     notify(message, error.message);
   }
@@ -947,6 +1290,18 @@ async function loadChatMessages(scrollToLatest = false) {
   }
 }
 
+const chatReactions = new Map();
+
+function toggleChatReaction(messageId) {
+  if (chatReactions.has(messageId)) {
+    chatReactions.delete(messageId);
+  } else {
+    chatReactions.set(messageId, 1);
+    playPopSound();
+  }
+  renderChatMessages(false);
+}
+
 function renderChatMessages(scrollToLatest) {
   const container = document.querySelector("#chat-messages");
   if (!chatState.messages.length) {
@@ -964,8 +1319,15 @@ function renderChatMessages(scrollToLatest) {
         : `<span class="chat-attachment-status">${mediaUrl === "" ? "Không tải được tệp đính kèm." : "Đang tải tệp..."}</span>`
       : "";
     const time = new Date(message.sentAt).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
-    return `<article class="chat-message-row ${message.isMine ? "is-mine" : ""}" data-chat-message="${message.id}">
-      <div class="chat-message-bubble">${message.content ? `<p>${escapeHtml(message.content)}</p>` : ""}${mediaMarkup}<time>${time}</time></div>
+    const hasReaction = chatReactions.has(message.id);
+    return `<article class="chat-message-row ${message.isMine ? "is-mine" : ""} ${hasReaction ? "has-reaction" : ""}" data-chat-message="${message.id}">
+      <div class="chat-message-bubble">
+        ${message.content ? `<p>${escapeHtml(message.content)}</p>` : ""}
+        ${mediaMarkup}
+        <time>${time}</time>
+        ${hasReaction ? `<span class="chat-reaction-badge" data-react-id="${message.id}" title="Bỏ tim">💖 1</span>` : ""}
+      </div>
+      <button type="button" class="chat-react-btn" data-react-id="${message.id}" title="Thả tim tin nhắn">💖</button>
     </article>`;
   }).join("");
   if (scrollToLatest) container.scrollTop = container.scrollHeight;
@@ -1228,6 +1590,45 @@ async function startApp() {
   document.querySelector("#photo-form").addEventListener("submit", uploadPhoto);
   document.querySelector("#photo-list").addEventListener("click", managePhoto);
   document.querySelector("#discover-results").addEventListener("click", swipe);
+  attachFilterPresets();
+
+  // Match celebration modal listeners
+  document.querySelector("#match-backdrop")?.addEventListener("click", closeMatchModal);
+  document.querySelector("#match-close-x")?.addEventListener("click", closeMatchModal);
+  document.querySelector("#match-close-btn")?.addEventListener("click", closeMatchModal);
+  document.querySelector("#match-open-chat-btn")?.addEventListener("click", () => {
+    if (currentMatchTargetProfile) {
+      chatState.pendingUserId = currentMatchTargetProfile.id;
+      closeMatchModal();
+      showPage("chat");
+    }
+  });
+
+  // Profile detail modal listeners
+  document.querySelector("#profile-detail-backdrop")?.addEventListener("click", closeProfileDetail);
+  document.querySelector("#profile-detail-close-btn")?.addEventListener("click", closeProfileDetail);
+  document.querySelector("#detail-pass-btn")?.addEventListener("click", () => {
+    if (currentDetailProfile) {
+      const card = document.querySelector(`.person-card[data-profile-id="${currentDetailProfile.id}"]`);
+      closeProfileDetail();
+      if (card) executeSwipe(card, false);
+    }
+  });
+  document.querySelector("#detail-like-btn")?.addEventListener("click", () => {
+    if (currentDetailProfile) {
+      const card = document.querySelector(`.person-card[data-profile-id="${currentDetailProfile.id}"]`);
+      closeProfileDetail();
+      if (card) executeSwipe(card, true);
+    }
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMatchModal();
+      closeProfileDetail();
+    }
+  });
+
   document.querySelector("#discover-pagination").addEventListener("click", (event) => {
     const button = event.target.closest("[data-discover-step]");
     if (!button || button.disabled) return;
@@ -1235,8 +1636,36 @@ async function startApp() {
     renderDiscoverPage();
     document.querySelector("#discover-filters").scrollIntoView({ behavior: "smooth", block: "start" });
   });
-  document.querySelector("#matches-results").addEventListener("click", openChatFromMatch);
-  document.querySelector("#passed-results").addEventListener("click", undoPass);
+  document.querySelector("#matches-results").addEventListener("click", (event) => {
+    const chatBtn = event.target.closest("[data-open-chat]");
+    if (chatBtn) {
+      openChatFromMatch(event);
+      return;
+    }
+    const viewTrigger = event.target.closest("[data-view-profile]");
+    if (viewTrigger) {
+      const card = viewTrigger.closest("[data-profile-id]");
+      if (card?.dataset.profileId) openProfileDetail(card.dataset.profileId);
+    }
+  });
+  document.querySelector("#passed-results").addEventListener("click", (event) => {
+    const undoBtn = event.target.closest("[data-undo-swipe]");
+    if (undoBtn) {
+      undoPass(event);
+      return;
+    }
+    const viewTrigger = event.target.closest("[data-view-profile]");
+    if (viewTrigger) {
+      const card = viewTrigger.closest("[data-profile-id]");
+      if (card?.dataset.profileId) openProfileDetail(card.dataset.profileId);
+    }
+  });
+  document.querySelector("#chat-messages").addEventListener("click", (event) => {
+    const reactBtn = event.target.closest("[data-react-id]");
+    if (reactBtn) {
+      toggleChatReaction(reactBtn.dataset.reactId);
+    }
+  });
   document.querySelector("#chat-contact-list").addEventListener("click", (event) => {
     const contact = event.target.closest("[data-chat-user]");
     if (contact) selectChatContact(contact.dataset.chatUser);
